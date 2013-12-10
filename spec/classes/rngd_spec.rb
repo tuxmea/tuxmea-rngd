@@ -8,6 +8,12 @@ describe 'rngd' do
         }}
         it { should contain_class('rngd') }
         it { should contain_class('rngd::params') }
+        it { should contain_package('rng-tools') }
+        it { should contain_file('/etc/sysconfig/rngd').with_content(/EXTRAOPTIONS/) }
+        it { should contain_service('rngd').with({
+            'ensure' => 'running',
+            'enable' => 'true'
+        })}
     end
     context 'on Debian' do
         let(:facts) {{
@@ -15,5 +21,11 @@ describe 'rngd' do
         }}
         it { should contain_class('rngd') }
         it { should contain_class('rngd::params') }
+        it { should contain_package('rng-utils') }
+        it { should contain_file('/etc/default/rngd').with_content(/EXTRAOPTIONS/) }
+        it { should contain_service('rngd').with({
+            'ensure' => 'running',
+            'enable' => 'true'
+        })}
     end
 end
