@@ -14,6 +14,41 @@ describe 'rngd' do
             'ensure' => 'running',
             'enable' => 'true'
         })}
+        context 'on Intel CPU' do
+            let(:facts) {{
+                :osfamily => 'RedHat',
+                :processor0 => 'Intel Mhagony'
+            }}
+            it { should contain_exec('rngmodule').with_command(/intel-rng/) }
+        end
+        context 'on AMD CPU' do
+            let(:facts) {{
+                :osfamily => 'RedHat',
+                :processor0 => 'AMD Mhagony'
+            }}
+            it { should contain_exec('rngmodule').with_command(/amd-rng/) }
+        end
+        context 'on VIA CPU' do
+            let(:facts) {{
+                :osfamily => 'RedHat',
+                :processor0 => 'VIA Mhagony'
+            }}
+            it { should contain_exec('rngmodule').with_command(/via-rng/) }
+        end
+        context 'on QEMU CPU' do
+            let(:facts) {{
+                :osfamily => 'RedHat',
+                :processor0 => 'QEMU Mhagony'
+            }}
+            it { should contain_exec('rngmodule').with_command(/virtio-rng/) }
+        end
+        context 'on other CPU' do
+            let(:facts) {{
+                :osfamily => 'RedHat',
+                :processor0 => 'foo'
+            }}
+            it { should_not contain_exec('rngmodule') }
+        end
     end
     context 'on Debian' do
         let(:facts) {{
@@ -27,5 +62,40 @@ describe 'rngd' do
             'ensure' => 'running',
             'enable' => 'true'
         })}
+        context 'on Intel CPU' do
+            let(:facts) {{
+                :osfamily => 'Debian',
+                :processor0 => 'Intel Mahagony'
+            }}
+            it { should contain_exec('rngmodule').with_command(/intel-rng/) }
+        end
+        context 'on AMD CPU' do
+            let(:facts) {{
+                :osfamily => 'RedHat',
+                :processor0 => 'AMD Mhagony'
+            }}
+            it { should contain_exec('rngmodule').with_command(/amd-rng/) }
+        end
+        context 'on VIA CPU' do
+            let(:facts) {{
+                :osfamily => 'RedHat',
+                :processor0 => 'VIA Mhagony'
+            }}
+            it { should contain_exec('rngmodule').with_command(/via-rng/) }
+        end
+        context 'on QEMU CPU' do
+            let(:facts) {{
+                :osfamily => 'RedHat',
+                :processor0 => 'QEMU Mhagony'
+            }}
+            it { should contain_exec('rngmodule').with_command(/virtio-rng/) }
+        end
+        context 'on other CPU' do
+            let(:facts) {{
+                :osfamily => 'RedHat',
+                :processor0 => 'foo'
+            }}
+            it { should_not contain_exec('rngmodule') }
+        end
     end
 end
