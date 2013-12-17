@@ -13,6 +13,7 @@ class rngd {
         ensure  => file,
         content => template('rngd/rngd.conf.erb'),
         require => Package[$rngd::params::rngdpkg],
+        notify  => Service[$rngd::params::rngdsrv],
     }
     if $rngd::params::rngmodule {
         exec { 'rngmodule':
@@ -24,6 +25,5 @@ class rngd {
     service { $rngd::params::rngdsrv:
         ensure  => running,
         enable  => true,
-        require => File[$rngd::params::rngdconfig],
     }
 }
