@@ -15,7 +15,7 @@ class rngd {
         require => Package[$rngd::params::rngdpkg],
         notify  => Service[$rngd::params::rngdsrv],
     }
-    if $rngd::params::rngmodule {
+    if ( $rngd::params::rngmodule and ! $::is_virtual) {
         exec { 'rngmodule':
             command => "/sbin/modprobe ${rngd::params::rngmodule}",
             unless  => "/sbin/lsmod | /bin/grep ${rngd::params::rngmodule}",
